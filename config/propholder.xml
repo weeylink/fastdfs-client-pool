@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-4.0.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+	<bean id="configProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>config/properties/fdfs_pool.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
+	<!-- fdfs POOL配置 -->
+	<bean id="fdfsPoolConfig" class="me.windpace.fdfs.pool.FastdfsPoolConfig">
+		<property name="maxIdle" value="${fdfsPool.maxActive}" />
+		<property name="maxTotal" value="${fdfsPool.maxIdle}" />
+		<property name="maxWaitMillis" value="${fdfsPool.maxWait}" />
+		<property name="testOnBorrow" value="${fdfsPool.testOnBorrow}" />
+	</bean>
+	<bean id="fdfsPool" class="me.windpace.fdfs.pool.FastdfsPool">
+		<constructor-arg index="0" ref="fdfsPoolConfig" />
+		<constructor-arg index="1" value="${fdfs.conf}" />
+	</bean>	
+
+</beans>
