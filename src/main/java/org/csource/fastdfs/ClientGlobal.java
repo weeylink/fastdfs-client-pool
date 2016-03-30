@@ -38,14 +38,25 @@ public class ClientGlobal
 /**
 * load global variables
 * @param conf_filename config filename
+ * @throws MyException 
+ * @throws IOException 
+ * @throws FileNotFoundException 
 */
-	public static void init(String conf_filename) throws FileNotFoundException, IOException, MyException
+	
+	public static void init(String conf_filename) throws FileNotFoundException, IOException, MyException{
+		init(conf_filename, null);
+	}
+	public static void init(String conf_filename, File conf_file) throws FileNotFoundException, IOException, MyException
 	{
   		IniFileReader iniReader;
   		String[] szTrackerServers;
 			String[] parts;
-			
-  		iniReader = new IniFileReader(conf_filename);
+		if(conf_file == null){
+	  		iniReader = new IniFileReader(conf_filename);
+		}else{
+			iniReader = new IniFileReader(conf_filename, conf_file);
+		}
+		
 
 			g_connect_timeout = iniReader.getIntValue("connect_timeout", DEFAULT_CONNECT_TIMEOUT);
   		if (g_connect_timeout < 0)

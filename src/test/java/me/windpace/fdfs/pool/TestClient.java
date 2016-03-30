@@ -27,18 +27,23 @@ public class TestClient {
 		DOMConfigurator.configureAndWatch("config/log4j.xml");
 		ApplicationContext factory =  new FileSystemXmlApplicationContext("config/propholder.xml");
 		FastdfsPool pool =	(FastdfsPool) factory.getBean("fdfsPool");
-		FastdfsClient fastdfsClient =  pool.getResource();
-		String local_filename = "D:/TDDOWNLOAD/libevent-2.0.16-stable.tar.gz";
 		
-		File file = new File(local_filename);
-		FileInputStream fis = new FileInputStream(file);
-		
-        NameValuePair[] meta_list = new NameValuePair[1];
-        meta_list[0] = new NameValuePair("fileName", local_filename);
+		for(int i = 0; i<1000; i++){
+			FastdfsClient fastdfsClient =  pool.getResource();
+			String local_filename = "D:/6757620_105953632124_2.jpg";
 			
-        String fileId = fastdfsClient.upload_file(null, local_filename, null, fis, file.length(), meta_list);
-        pool.returnResource(fastdfsClient);
-		System.out.println("upload success. file id is: " + fileId);
+			File file = new File(local_filename);
+			FileInputStream fis = new FileInputStream(file);
+			
+	        NameValuePair[] meta_list = new NameValuePair[1];
+	        meta_list[0] = new NameValuePair("fileName", local_filename);
+				
+	        String fileId = fastdfsClient.upload_file(null, local_filename, null, fis, file.length(), meta_list);
+	        pool.returnResource(fastdfsClient);
+			System.out.println("upload success. file id is: " + fileId);
+
+		}
+		
 
 	}
 }

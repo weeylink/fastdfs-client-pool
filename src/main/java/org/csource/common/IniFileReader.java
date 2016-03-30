@@ -28,8 +28,17 @@ public class IniFileReader
 	public IniFileReader(String conf_filename) throws FileNotFoundException, IOException
 	{
 		this.conf_filename = conf_filename;
-		loadFromFile(conf_filename);
+		loadFromFile(conf_filename, null);
 	}
+	
+	
+	
+	public IniFileReader(String conf_filename, File conf_file) throws FileNotFoundException, IOException
+	{
+		this.conf_filename = conf_filename;
+		loadFromFile(conf_filename, conf_file);
+	}
+	
 	
 /**
 * get the config filename
@@ -126,7 +135,7 @@ public class IniFileReader
 		return values;
 	}
 	
-	private void loadFromFile(String conf_filename) throws FileNotFoundException, IOException
+	private void loadFromFile(String conf_filename, File conf_file) throws FileNotFoundException, IOException
 	{
 		FileReader fReader;
 		BufferedReader buffReader;
@@ -136,8 +145,13 @@ public class IniFileReader
 		String value;
 		Object obj;
 		ArrayList valueList;
-		
-	  fReader = new FileReader(conf_filename);
+	  if(conf_file == null)
+	  {
+		  fReader = new FileReader(conf_filename);
+	  }else{
+		  fReader = new FileReader(conf_file);
+	  }
+
 	  buffReader = new BufferedReader(fReader);
 	  this.paramTable = new Hashtable();
 	  

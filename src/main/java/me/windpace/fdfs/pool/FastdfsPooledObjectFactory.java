@@ -11,6 +11,9 @@ import org.csource.fastdfs.ProtoCommon;
 import org.csource.fastdfs.StorageServer;
 import org.csource.fastdfs.TrackerClient;
 import org.csource.fastdfs.TrackerServer;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 /**
  * @project: fastdfs-client-pool
  * @Title: FastdfsPooledObjectFactory
@@ -26,9 +29,13 @@ public class FastdfsPooledObjectFactory implements PooledObjectFactory<FastdfsCl
 	public FastdfsPooledObjectFactory(String confPath) {
 		super();
 		try {
-			String classPath = new File(super.getClass().getResource("/").getFile()).getCanonicalPath();
-			String configFilePath = classPath + File.separator + confPath;
-			ClientGlobal.init(configFilePath);
+			Resource resource = null;
+			if(confPath.startsWith("classpath:")){
+				resource = new ClassPathResource(confPath.substring(confPath.indexOf(":") + 1));
+			}else{
+				resource = new FileSystemResource(confPath);
+			}
+			ClientGlobal.init(confPath, resource.getFile());
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
