@@ -1,11 +1,13 @@
 package me.windpace.fdfs.pool;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
+import org.csource.common.MyException;
 import org.csource.fastdfs.ClientGlobal;
 import org.csource.fastdfs.ProtoCommon;
 import org.csource.fastdfs.StorageServer;
@@ -26,19 +28,15 @@ import org.springframework.core.io.Resource;
  */
 public class FastdfsPooledObjectFactory implements PooledObjectFactory<FastdfsClient> {
 
-	public FastdfsPooledObjectFactory(String confPath) {
+	public FastdfsPooledObjectFactory(String confPath) throws FileNotFoundException, IOException, MyException {
 		super();
-		try {
-			Resource resource = null;
-			if(confPath.startsWith("classpath:")){
-				resource = new ClassPathResource(confPath.substring(confPath.indexOf(":") + 1));
-			}else{
-				resource = new FileSystemResource(confPath);
-			}
-			ClientGlobal.init(confPath, resource.getFile());
-		} catch (Throwable e) {
-			e.printStackTrace();
+		Resource resource = null;
+		if(confPath.startsWith("classpath:")){
+			resource = new ClassPathResource(confPath.substring(confPath.indexOf(":") + 1));
+		}else{
+			resource = new FileSystemResource(confPath);
 		}
+		ClientGlobal.init(confPath, resource.getFile());
 	}
 
 	@Override
