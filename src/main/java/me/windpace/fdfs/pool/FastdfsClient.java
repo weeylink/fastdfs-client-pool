@@ -3,6 +3,7 @@ package me.windpace.fdfs.pool;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.csource.common.MyException;
 import org.csource.common.NameValuePair;
 import org.csource.fastdfs.ProtoCommon;
 import org.csource.fastdfs.StorageClient1;
@@ -58,7 +59,7 @@ public class FastdfsClient extends StorageClient1 {
 	 * @param meta_list
 	 * @return
 	 */
-	public String upload_file(String group_name, String file_name, String file_ext_name, InputStream inputStream, Long file_size, NameValuePair[] meta_list) {
+	public String upload_file(String group_name, String file_name, String file_ext_name, InputStream inputStream, Long file_size, NameValuePair[] meta_list) throws IOException, MyException{
 		final byte cmd = ProtoCommon.STORAGE_PROTO_CMD_UPLOAD_FILE;
 		if (file_ext_name == null) {
 			int nPos = file_name.lastIndexOf('.');
@@ -74,8 +75,8 @@ public class FastdfsClient extends StorageClient1 {
 				return parts[0] + SPLIT_GROUP_NAME_AND_FILENAME_SEPERATOR + parts[1];
 			}
 
-		} catch (Throwable e) {
-			e.printStackTrace();
+		} catch (IOException | MyException e) {
+			throw e;
 		} finally {
 			try {
 				if (inputStream != null) {

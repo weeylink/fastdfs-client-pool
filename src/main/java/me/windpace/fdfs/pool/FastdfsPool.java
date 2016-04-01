@@ -1,6 +1,10 @@
 package me.windpace.fdfs.pool;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.csource.common.MyException;
 /**
  * @project: fastdfs-client-pool
  * @Title: FastdfsPool
@@ -13,7 +17,7 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
  */
 public class FastdfsPool extends Pool<FastdfsClient> {
 
-	public FastdfsPool(GenericObjectPoolConfig poolConfig, String confPath) {
+	public FastdfsPool(GenericObjectPoolConfig poolConfig, String confPath) throws FileNotFoundException, IOException, MyException {
 		super(poolConfig, new FastdfsPooledObjectFactory(confPath));
 		
 	}
