@@ -1,6 +1,5 @@
 package me.windpace.fdfs.pool;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -57,14 +56,7 @@ public class FastdfsPooledObjectFactory implements PooledObjectFactory<FastdfsCl
 			return;
 		}
 		FastdfsClient client = p.getObject();
-		TrackerServer trackerServer = client.getTrackerServer();
-		StorageServer storageServer = client.getStorageServer();
-		if (trackerServer != null) {
-			trackerServer.close();
-		}
-		if (storageServer != null) {
-			storageServer.close();
-		}
+		client.reset();
 
 	}
 

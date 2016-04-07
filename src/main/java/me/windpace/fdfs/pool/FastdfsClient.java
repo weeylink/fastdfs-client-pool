@@ -38,16 +38,41 @@ public class FastdfsClient extends StorageClient1 {
 	/**
 	 * tip：重新获取storageServer trackerServer
 	 */
-	public void reset() {
-		this.storageServer = null;
-		this.trackerServer = null;
+	public void reset() throws IOException{
+		if (this.trackerServer != null) {
+			try {
+				this.trackerServer.close();
+			} catch (IOException e) {
+			    throw e;
+			}finally{
+				this.trackerServer = null;
+			}
+		}
+		if (storageServer != null) {
+			try {
+				storageServer.close();
+			} catch (IOException e) {
+				throw e;
+			}finally {
+				this.storageServer = null;
+			}
+		}
+
 	}
 
 	/**
 	 * tip：重新获取storage
 	 */
 	public void reset0() {
-		this.storageServer = null;
+		if (storageServer != null) {
+			try {
+				storageServer.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}finally {
+				this.storageServer = null;
+			}
+		}
 	}
 	/**
 	 * 
