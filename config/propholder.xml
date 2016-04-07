@@ -40,6 +40,7 @@
 	<bean id="fdfsPool" class="me.windpace.fdfs.pool.FastdfsPool">
 		<constructor-arg index="0" ref="fdfsPoolConfig" />
 		<constructor-arg index="1" value="${fdfs.conf}" />
+		<constructor-arg index="2" value="${fdfsPool.object.maxActive}" />
 	</bean>	
 
 </beans>

@@ -17,8 +17,8 @@ import org.csource.common.MyException;
  */
 public class FastdfsPool extends Pool<FastdfsClient> {
 
-	public FastdfsPool(GenericObjectPoolConfig poolConfig, String confPath) throws FileNotFoundException, IOException, MyException {
-		super(poolConfig, new FastdfsPooledObjectFactory(confPath));
+	public FastdfsPool(GenericObjectPoolConfig poolConfig, String confPath ,Integer objMaxActive) throws FileNotFoundException, IOException, MyException {
+		super(poolConfig, new FastdfsPooledObjectFactory(confPath, objMaxActive));
 		
 	}
 

@@ -30,7 +30,7 @@ public class TestClient {
 		
 		for(int i = 0; i<1000; i++){
 			FastdfsClient fastdfsClient =  pool.getResource();
-			String local_filename = "D:/6757620_105953632124_2.jpg";
+			String local_filename = "D:/demo2.png";
 			
 			File file = new File(local_filename);
 			FileInputStream fis = new FileInputStream(file);
@@ -40,7 +40,7 @@ public class TestClient {
 				
 	        String fileId = fastdfsClient.upload_file(null, local_filename, null, fis, file.length(), meta_list);
 	        pool.returnResource(fastdfsClient);
-			System.out.println("upload success. file id is: " + fileId);
+			System.out.println(fastdfsClient + " upload success. file id is: " + fileId);
 
 		}
 		

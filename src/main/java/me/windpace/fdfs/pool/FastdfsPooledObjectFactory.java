@@ -26,8 +26,10 @@ import org.springframework.core.io.Resource;
  * @version:
  */
 public class FastdfsPooledObjectFactory implements PooledObjectFactory<FastdfsClient> {
+	
+	private final Integer objMaxActive;
 
-	public FastdfsPooledObjectFactory(String confPath) throws FileNotFoundException, IOException, MyException {
+	public FastdfsPooledObjectFactory(String confPath, Integer objMaxActive) throws FileNotFoundException, IOException, MyException {
 		super();
 		Resource resource = null;
 		if(confPath.startsWith("classpath:")){
@@ -35,15 +37,17 @@ public class FastdfsPooledObjectFactory implements PooledObjectFactory<FastdfsCl
 		}else{
 			resource = new FileSystemResource(confPath);
 		}
+		this.objMaxActive = objMaxActive;
 		ClientGlobal.init(confPath, resource.getFile());
 	}
 
 	@Override
 	public PooledObject<FastdfsClient> makeObject() throws Exception {
+		
 		TrackerClient tracker = new TrackerClient();
 		TrackerServer trackerServer = tracker.getConnection();
 		StorageServer storageServer = null;
-		FastdfsClient client = new FastdfsClient(trackerServer, storageServer);
+		FastdfsClient client = new FastdfsClient(trackerServer, storageServer, objMaxActive);
 		return new DefaultPooledObject<FastdfsClient>(client);
 	}
 
@@ -63,7 +67,7 @@ public class FastdfsPooledObjectFactory implements PooledObjectFactory<FastdfsCl
 	@Override
 	public boolean validateObject(PooledObject<FastdfsClient> p) {
 		try {
-			return ProtoCommon.activeTest(p.getObject().getTrackerServer().getSocket());
+			return ProtoCommon.activeTest(p.getObject().getStorageServer().getSocket());
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
@@ -73,6 +77,14 @@ public class FastdfsPooledObjectFactory implements PooledObjectFactory<FastdfsCl
 
 	@Override
 	public void activateObject(PooledObject<FastdfsClient> p) throws Exception {
+		if (p == null) {
+			return;
+		}
+		if (p.getObject() == null) {
+			return;
+		}
+		FastdfsClient client = p.getObject();
+		client.tryReset();
 	}
 
 	@Override
