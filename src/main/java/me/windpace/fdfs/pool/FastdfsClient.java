@@ -10,8 +10,6 @@ import org.csource.fastdfs.StorageClient1;
 import org.csource.fastdfs.StorageServer;
 import org.csource.fastdfs.TrackerServer;
 import org.csource.fastdfs.UploadStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @project: fastdfs-client-pool
@@ -24,7 +22,6 @@ import org.slf4j.LoggerFactory;
  * @version:
  */
 public class FastdfsClient extends StorageClient1 {
-	private static final Logger logger = LoggerFactory.getLogger(FastdfsClient.class);
 	
 	private int active;
 	
@@ -60,13 +57,7 @@ public class FastdfsClient extends StorageClient1 {
 	 * tip：重新获取storageServer trackerServer
 	 */
 	public void reset() throws IOException{
-		try {
-			throw new Exception();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		
-		logger.info(this + " client reset!");
+
 		if (this.trackerServer != null) {
 			try {
 				this.trackerServer.close();
