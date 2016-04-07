@@ -46,7 +46,7 @@ public class FastdfsPooledObjectFactory implements PooledObjectFactory<FastdfsCl
 		
 		TrackerClient tracker = new TrackerClient();
 		TrackerServer trackerServer = tracker.getConnection();
-		StorageServer storageServer = null;
+		StorageServer storageServer = tracker.getStoreStorage(trackerServer);
 		FastdfsClient client = new FastdfsClient(trackerServer, storageServer, objMaxActive);
 		return new DefaultPooledObject<FastdfsClient>(client);
 	}
